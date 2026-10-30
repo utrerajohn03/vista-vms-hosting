@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+html, body { margin: 0; background: #F3F4F6; font-family: Inter, system-ui, sans-serif; color: #111827; }
+button, select, input, textarea { font-family: inherit; }
+button:focus-visible, a:focus-visible { outline: 2px solid #2563EB; outline-offset: 2px; }

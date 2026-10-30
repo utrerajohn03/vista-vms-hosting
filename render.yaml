@@ -1,0 +1,45 @@
+# Render Blueprint (API only): New > Blueprint > pick this repo. Fill the "sync: false" values when asked.
+# The React app is hosted on Vercel (see frontend/vercel.json) and calls this API.
+services:
+  - type: web
+    name: vista-vms
+    runtime: python
+    plan: free                      # free plans sleep after 15 min idle: see "Keep it awake" in the README
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DATABASE_URL           # Supabase Session pooler URI
+        sync: false
+      - key: STAFF_ACCESS_CODE      # the code staff type to sign in
+        sync: false
+      - key: SUPER_ADMIN_CODE       # the platform owner's own code (Super Admin sign-in on the main site)
+        sync: false
+      - key: CORS_ORIGINS           # your Vercel URL(s), comma separated, e.g. https://vista-vms.vercel.app
+        sync: false
+      - key: FRONTEND_URL           # same Vercel URL: household invitation links point to it
+        sync: false
+      - key: EMAILJS_SERVICE_ID     # emails (QR codes, approval links, invitations): EmailJS, over HTTPS so it works on Render free. See HOSTING.md step 3
+        sync: false
+      - key: EMAILJS_TEMPLATE_ID
+        sync: false
+      - key: EMAILJS_PUBLIC_KEY
+        sync: false
+      - key: EMAILJS_PRIVATE_KEY    # needed because the API calls EmailJS from a server
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CRON_KEY
+        generateValue: true
+      - key: AUTO_MIGRATE
+        value: "1"
+      - key: AUTO_BOOTSTRAP
+        value: "1"
+      - key: AUTO_SEED
+        value: "0"
+      - key: DEFAULT_PROPERTY
+        value: greenfield-village-7f3a
+      - key: VILLAGE_NAME
+        value: Greenfield Village
